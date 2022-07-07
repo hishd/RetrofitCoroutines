@@ -8,14 +8,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModel
 import com.hishd.retrofitcoroutines.apimanager.postmanager.PostManager
+import com.hishd.retrofitcoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var postManager: PostManager
     private val postData =  MutableLiveData<PostAPIModel>()
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupResources()
         setupObservers()
@@ -28,15 +32,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         this.postData.observe(this) {   postData ->
+            var textData = ""
             for(post in postData) {
-                Log.d("POST", post.toString())
+                textData += "Post ID : ${post.id} \n Post Title : ${post.title} \n User ID : ${post.userId} \n Body : ${post.body} \n\n\n"
             }
+            binding.txtData.text = textData
         }
     }
 
     private fun getAllPosts() {
         lifecycleScope.launch() {
-            postManager.getAllPosts().observe(this@MainActivity) {
+            // Get all Post Data
+//            postManager.getAllPosts().observe(this@MainActivity) {
+//                postData.value = it
+//            }
+
+            // Get Post Data related to userId 10
+            postManager.getAllPostsByUser(userId = 10).observe(this@MainActivity) {
                 postData.value = it
             }
         }
