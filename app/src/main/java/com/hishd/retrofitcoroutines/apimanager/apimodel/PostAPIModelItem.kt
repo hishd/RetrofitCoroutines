@@ -1,4 +1,4 @@
-package com.hishd.retrofitcoroutines.APIManager.APIModel
+package com.hishd.retrofitcoroutines.apimanager.apimodel
 
 import com.google.gson.annotations.SerializedName
 
