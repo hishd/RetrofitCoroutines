@@ -36,4 +36,12 @@ class PostManager {
         }
         return postData
     }
+
+    suspend fun createNewPost(post: PostAPIModelItem) : LiveData<Boolean> {
+        val status: LiveData<Boolean> = liveData {
+            val code = retInstance.createPost(post).code()
+            emit(code in 200..299)
+        }
+        return status
+    }
 }

@@ -3,6 +3,7 @@ package com.hishd.retrofitcoroutines
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -54,10 +55,21 @@ class MainActivity : AppCompatActivity() {
 //            }
 
             // Get Post Data by Id 5
-            postManager.getPostById(5).observe(this@MainActivity) {
-                val data = PostAPIModel()
-                data.add(it)
-                postData.value = data
+//            postManager.getPostById(5).observe(this@MainActivity) {
+//                val data = PostAPIModel()
+//                data.add(it)
+//                postData.value = data
+//            }
+
+            // Create a new post
+            val post = PostAPIModelItem(
+                body = "Newly created post",
+                id = 0,
+                title = "New Post Title",
+                userId = 10
+            )
+            postManager.createNewPost(post).observe(this@MainActivity) {    status ->
+                Toast.makeText(this@MainActivity, "Post creation ${if(status) "Successful" else "Failed"}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -2,10 +2,9 @@ package com.hishd.retrofitcoroutines.apimanager.apiinterface
 
 import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModel
 import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModelItem
+import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface PostInterface {
     @GET("/posts")
@@ -16,4 +15,7 @@ interface PostInterface {
 
     @GET("/posts/{id}")
     suspend fun getPostById(@Path(value = "id") id: Int) : Response<PostAPIModelItem>
+
+    @POST("/posts")
+    suspend fun createPost(@Body post: PostAPIModelItem) : Response<ResponseBody>
 }
