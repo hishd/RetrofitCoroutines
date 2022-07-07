@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModel
+import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModelItem
 import com.hishd.retrofitcoroutines.apimanager.postmanager.PostManager
 import com.hishd.retrofitcoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -48,8 +49,15 @@ class MainActivity : AppCompatActivity() {
 //            }
 
             // Get Post Data related to userId 10
-            postManager.getAllPostsByUser(userId = 10).observe(this@MainActivity) {
-                postData.value = it
+//            postManager.getAllPostsByUser(userId = 10).observe(this@MainActivity) {
+//                postData.value = it
+//            }
+
+            // Get Post Data by Id 5
+            postManager.getPostById(5).observe(this@MainActivity) {
+                val data = PostAPIModel()
+                data.add(it)
+                postData.value = data
             }
         }
     }
