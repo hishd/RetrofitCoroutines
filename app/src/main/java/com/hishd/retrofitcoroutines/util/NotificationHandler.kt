@@ -109,7 +109,7 @@ class NotificationHandler(
     }
 
     /*
-        Write this code in the Pending Intent Activity to set the status of the notification
+        Write this code in the Pending Intent Activity to set the status of the currently displaying notification
 
         private fun receiveInput() {
             val KEY_REPLY = "key_reply"
