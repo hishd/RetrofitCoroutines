@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -11,12 +12,15 @@ import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModel
 import com.hishd.retrofitcoroutines.apimanager.apimodel.PostAPIModelItem
 import com.hishd.retrofitcoroutines.apimanager.postmanager.PostManager
 import com.hishd.retrofitcoroutines.databinding.ActivityMainBinding
+import com.hishd.retrofitcoroutines.util.NotificationHandler
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var postManager: PostManager
     private val postData =  MutableLiveData<PostAPIModel>()
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var notificationHandler: NotificationHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupResources() {
         postManager = PostManager()
+        notificationHandler = NotificationHandler(this, "com.hishd.retrofitcoroutines.channel1", "Post Data", "Post Data Channel")
     }
 
     private fun setupObservers() {
@@ -70,6 +75,14 @@ class MainActivity : AppCompatActivity() {
             )
             postManager.createNewPost(post).observe(this@MainActivity) {    status ->
                 Toast.makeText(this@MainActivity, "Post creation ${if(status) "Successful" else "Failed"}", Toast.LENGTH_SHORT).show()
+                notificationHandler.displayNotification(
+                    0,
+                    "Post Creation",
+                    "Post creation ${if(status) "Successful" else "Failed"}",
+                    android.R.drawable.ic_dialog_info,
+                    true,
+                    NotificationCompat.PRIORITY_HIGH
+                )
             }
         }
     }
